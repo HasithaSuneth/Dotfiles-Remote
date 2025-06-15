@@ -28,7 +28,7 @@ elif [[ "$PM" == "dnf" ]]; then
 fi
 
 # Common package list
-COMMON_PACKAGES=(zsh tmux btop fzf fd-find)
+COMMON_PACKAGES=(zsh tmux btop fzf fd-find ripgrep)
 
 # Install common packages
 echo "📥 Installing common packages..."
@@ -68,10 +68,6 @@ echo "✨ Installing optional tools..."
 install_if_missing "zoxide" "zoxide" \
     "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
 
-# Yazi
-install_if_missing "yazi" "yazi" \
-    "bash <(curl -sSL https://raw.githubusercontent.com/sxyazi/yazi/main/install.sh)"
-
 # Atuin
 install_if_missing "atuin" "atuin" \
     "bash <(curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh)"
@@ -101,8 +97,30 @@ install_oh_my_zsh() {
     fi
 }
 
+install_yazi() {
+    if ! command -v yazi &>/dev/null; then
+        if [[ "$PM" == "dnf" ]]; then
+            # sudo dnf install dnf-plugins-core
+            sudo dnf copr enable -y lihaohong/yazi
+            sudo dnf install -y yazi
+        else
+            wget -qO yazi.zip https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip
+            unzip -q yazi.zip -d yazi-temp
+            sudo mkdir -p /usr/local/bin
+            sudo mv yazi-temp/*/{ya,yazi} /usr/local/bin
+            sudo chmod +x /usr/local/bin/ya /usr/local/bin/yazi
+            rm -rf yazi-temp yazi.zip
+        fi
+    else
+        echo "✅ yazi already installed."
+    fi
+}
+
 # Oh My Zsh
 install_oh_my_zsh
+
+# Yazi
+install_yazi
 
 # LazyGit
 if ! command -v lazygit &>/dev/null; then
