@@ -28,7 +28,7 @@ elif [[ "$PM" == "dnf" ]]; then
 fi
 
 # Common package list
-COMMON_PACKAGES=(zsh tmux btop fzf fd-find ripgrep)
+COMMON_PACKAGES=(zsh tmux btop fzf fd-find ripgrep bat)
 
 # Install common packages
 echo "📥 Installing common packages..."
