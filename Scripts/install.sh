@@ -125,6 +125,34 @@ install_lazygit() {
     fi
 }
 
+install_eza() {
+    if ! command -v eza &>/dev/null; then
+        echo "🔸 Installing eza..."
+
+        if [[ "$PM" == "dnf" ]]; then
+            sudo dnf install -y eza
+        else
+            # Setup GPG key and repo only if not already done
+            if [[ ! -f /etc/apt/keyrings/eza.gpg ]]; then
+                echo "🔑 Adding eza GPG key and repo..."
+                sudo mkdir -p /etc/apt/keyrings
+                wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | \
+                    sudo gpg --dearmor -o /etc/apt/keyrings/eza.gpg
+                echo "deb [signed-by=/etc/apt/keyrings/eza.gpg] http://deb.gierens.de stable main" | \
+                    sudo tee /etc/apt/sources.list.d/eza.list > /dev/null
+                sudo chmod 644 /etc/apt/keyrings/eza.gpg /etc/apt/sources.list.d/eza.list
+            fi
+
+            sudo apt update
+            sudo apt install -y eza
+        fi
+
+        echo "✅ eza installed."
+    else
+        echo "✅ eza already installed."
+    fi
+}
+
 # Optional/custom tools
 echo "✨ Installing optional tools..."
 
@@ -148,6 +176,9 @@ install_yazi
 
 # LazyGit
 install_lazygit
+
+# Eza
+install_eza
 
 
 echo -e "\n✅ All tools are installed and ready to use!"

@@ -41,3 +41,17 @@ for dotfile in "$DOTFILES_SRC"/.*; do
 done
 
 echo "✅ Dotfiles setup completed!"
+
+# Change default shell to Zsh
+if [[ "$SHELL" != "$(which zsh)" ]]; then
+    echo "⏳ Changing default shell to Zsh..."
+    if grep -q "$(which zsh)" /etc/shells; then
+        chsh -s "$(which zsh)"
+        echo "✅ Default shell changed to Zsh. Please log out and back in for changes to take effect."
+    else
+        echo "❌ Zsh not found in /etc/shells. Cannot change default shell automatically."
+    fi
+else
+    echo "✅ Zsh is already the default shell."
+fi
+
