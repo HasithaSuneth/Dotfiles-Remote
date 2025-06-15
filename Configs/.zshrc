@@ -1,13 +1,10 @@
 
-export ZSH="$HOME/.oh-my-zsh"
 export COLORTERM=truecolor
 export PATH="$HOME/.local/bin:$PATH"
 
 ZSH_THEME="robbyrussell"
 
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
-
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export LANG=en_US.UTF-8
@@ -54,9 +51,6 @@ alias lti="eza --tree --level=2 --long --icons --git-ignore"
 alias ltree="eza --tree --level=2  --icons --git"
 alias ls='eza --icons=auto'
 
-# Yazi
-alias y='yazi'
-
 # Auto cd
 setopt auto_cd
 
@@ -74,11 +68,3 @@ setopt hist_verify
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-
-eval "$(starship init zsh)"
-
-eval "$(zoxide init zsh)"
-. "$HOME/.atuin/bin/env"
-
-# eval "$(atuin init zsh)"
-eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
