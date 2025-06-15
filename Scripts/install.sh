@@ -153,12 +153,24 @@ install_eza() {
     fi
 }
 
+install_zoxide() {
+    if ! command -v zoxide &>/dev/null; then
+        echo "🔸 Installing zoxide..."
+
+        if [[ "$PM" == "dnf" ]]; then
+            sudo dnf install -y zoxide
+        else
+            curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+        fi
+
+        echo "✅ zoxide installed."
+    else
+        echo "✅ zoxide already installed."
+    fi
+}
+
 # Optional/custom tools
 echo "✨ Installing optional tools..."
-
-# Zoxide
-install_if_missing "zoxide" "zoxide" \
-    "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
 
 # Atuin
 install_if_missing "atuin" "atuin" \
@@ -167,6 +179,9 @@ install_if_missing "atuin" "atuin" \
 # Starship
 install_if_missing "starship" "starship" \
     "curl -sS https://starship.rs/install.sh | sh -s -- -y"
+
+# Zoxide
+install_zoxide
 
 # Oh My Zsh
 install_oh_my_zsh

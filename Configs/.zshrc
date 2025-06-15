@@ -1,6 +1,7 @@
 
 export ZSH="$HOME/.oh-my-zsh"
 export COLORTERM=truecolor
+export PATH="$HOME/.local/bin:$PATH"
 
 ZSH_THEME="robbyrussell"
 
