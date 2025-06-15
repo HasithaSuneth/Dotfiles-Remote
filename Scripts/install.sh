@@ -61,21 +61,6 @@ install_if_missing() {
     fi
 }
 
-# Optional/custom tools
-echo "✨ Installing optional tools..."
-
-# Zoxide
-install_if_missing "zoxide" "zoxide" \
-    "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
-
-# Atuin
-install_if_missing "atuin" "atuin" \
-    "bash <(curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh)"
-
-# Starship
-install_if_missing "starship" "starship" \
-    "curl -sS https://starship.rs/install.sh | sh -s -- -y"
-
 install_oh_my_zsh() {
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
         echo "🔸 Installing oh-my-zsh..."
@@ -110,11 +95,50 @@ install_yazi() {
             sudo mv yazi-temp/*/{ya,yazi} /usr/local/bin
             sudo chmod +x /usr/local/bin/ya /usr/local/bin/yazi
             rm -rf yazi-temp yazi.zip
+
+            echo "✅ yazi installed."
         fi
     else
         echo "✅ yazi already installed."
     fi
 }
+
+install_lazygit() {
+    if ! command -v lazygit &>/dev/null; then
+        echo "🔸 Installing lazygit..."
+        if [[ "$PM" == "dnf" ]]; then
+            sudo dnf copr enable atim/lazygit -y
+            sudo dnf install -y lazygit
+        else
+            LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" \
+              | grep -Po '"tag_name": *"v\K[^"]*')
+
+            curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+            tar xf lazygit.tar.gz lazygit
+            sudo install lazygit -D -t /usr/local/bin/
+            rm -f lazygit.tar.gz lazygit
+        fi
+
+        echo "✅ lazygit installed."
+    else
+        echo "✅ lazygit already installed."
+    fi
+}
+
+# Optional/custom tools
+echo "✨ Installing optional tools..."
+
+# Zoxide
+install_if_missing "zoxide" "zoxide" \
+    "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+
+# Atuin
+install_if_missing "atuin" "atuin" \
+    "bash <(curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh)"
+
+# Starship
+install_if_missing "starship" "starship" \
+    "curl -sS https://starship.rs/install.sh | sh -s -- -y"
 
 # Oh My Zsh
 install_oh_my_zsh
@@ -123,16 +147,7 @@ install_oh_my_zsh
 install_yazi
 
 # LazyGit
-if ! command -v lazygit &>/dev/null; then
-    if [[ "$PM" == "dnf" ]]; then
-        sudo dnf copr enable atim/lazygit -y
-        sudo dnf install -y lazygit
-    else
-        sudo apt install -y lazygit
-    fi
-else
-    echo "✅ lazygit already installed."
-fi
+install_lazygit
 
 
 echo -e "\n✅ All tools are installed and ready to use!"
