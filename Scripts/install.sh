@@ -169,6 +169,18 @@ install_zoxide() {
     fi
 }
 
+install_tpm() {
+    local tpm_path="$HOME/.tmux/plugins/tpm"
+    if [ -d "$tpm_path" ]; then
+        echo "✅ TPM already installed at $tpm_path"
+    else
+        echo "🔸 Installing TPM..."
+        git clone https://github.com/tmux-plugins/tpm "$tpm_path"
+
+        echo "✅ TPM installed successfully."
+    fi
+}
+
 # Optional/custom tools
 echo "✨ Installing optional tools..."
 
@@ -194,6 +206,9 @@ install_lazygit
 
 # Eza
 install_eza
+
+# TPM
+install_tpm
 
 
 echo -e "\n✅ All tools are installed and ready to use!"
