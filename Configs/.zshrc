@@ -34,6 +34,7 @@ alias lsa='ls -a'
 
 # Bat
 alias cat='bat'
+# alias cat='batcat' # Uncomment this line if bat is installed as batcat
 
 # Tmux
 alias tm=tmux
@@ -68,3 +69,6 @@ setopt hist_verify
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+
+# zoxide
+eval "$(zoxide init zsh)"
